@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>springboot学习</title>
+</head>
+
+<body>
+<div th:each="item : ${list}">
+    <h1 th:text="${{item.id}}"></h1>
+    <p><a th:text="${{item.userName}}"></a></p>
+    <p><a th:text="${{item.password}}"></a></p>
+</div>
+</body>
+</html>

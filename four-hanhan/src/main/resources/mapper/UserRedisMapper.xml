@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zpt.demo.mapper.UserRedisMapper">
+    <insert id="insert" parameterType="com.zpt.demo.model.User">
+        insert into user values (#{u_id},#{u_name},#{u_password})
+    </insert>
+
+    <select id="selectAll" resultType="com.zpt.demo.model.User">
+        SELECT * from user
+    </select>
+</mapper>

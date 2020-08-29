@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zpt.demo.mapper.UserMapper">
+
+    <select id="login" parameterType="com.zpt.demo.model.User" resultType="user">
+        select * from user where userName = #{userName} and password = #{password}
+    </select>
+
+    <select id="getUsers"  resultType="com.zpt.demo.model.User">
+        SELECT * FROM user
+    </select>
+
+    <insert id="insert" parameterType="com.zpt.demo.model.User">
+        insert into user values(#{u_id},#{u_name},#{u_password})
+    </insert>
+
+    <update id="updateUser" parameterType="com.zpt.demo.model.User">
+        UPDATE user SET u_id = #{u_id},u_name=#{u_name},u_password=#{u_password}
+        <where>
+            u_id = #{u_id}
+        </where>
+    </update>
+
+    <select id="findByUsername" parameterType="string" resultType="com.zpt.demo.model.User">
+        select * from user where u_name = #{username}
+    </select>
+
+</mapper>

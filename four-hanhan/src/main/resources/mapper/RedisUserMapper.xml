@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.zpt.demo.mapper.RedisUserMapper">
+
+    <cache type="com.zpt.demo.cache.RedisCache" flushInterval="15000"/>
+
+    <select id="findAll" resultType="com.zpt.demo.model.RedisUser">
+        select * from user
+    </select>
+
+    <update id="update" parameterType="com.zpt.demo.model.RedisUser">
+        update user set user_name = #{userName},password = #{password},age = #{age}
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>个人博客</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content=""
+    />
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- Meta tag Keywords -->
+    <!-- css files -->
+    <link rel="stylesheet" th:href="@{../static/css/style.css}" type="text/css" media="all" />
+    <!-- Style-CSS -->
+    <link rel="stylesheet" th:href="@{../static/css/fontawesome-all.css}">
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //css files -->
+    <!-- web-fonts -->
+    <link th:href="@{http://maxcdn.bootstrapcdn.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i}" rel="stylesheet">
+    <link th:href="@{http://maxcdn.bootstrapcdn.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i}" rel="stylesheet">
+    <!-- //web-fonts -->
+</head>
+
+<body>
+<!-- bg effect -->
+<div id="bg">
+    <canvas></canvas>
+    <canvas></canvas>
+    <canvas></canvas>
+</div>
+<!-- //bg effect -->
+<!-- title -->
+<h1>个人博客</h1>
+<!-- //title -->
+<!-- content -->
+
+<div class="sub-main-w3">
+    <button ><a th:href="@{/User/getUsers}"  method="post">获取列表</a></button>
+</div>
+
+<!-- copyright -->
+<div class="footer">
+    <p>Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+</div>
+<!-- //copyright -->
+
+<!-- Jquery -->
+<script th:src="@{../static/js/jquery-3.3.1.min.js}"></script>
+<!-- //Jquery -->
+
+<!-- effect js -->
+<script th:src="@{../static/js/canva_moving_effect.js}"></script>
+<!-- //effect js -->
+
+</body>
+
+</html>
+
+</body>
+</html>

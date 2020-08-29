@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zpt.demo.mapper.PachongMapper">
+    <insert id="insert" >
+        insert into lol_heros(l_name,l_image) values
+        <foreach collection="list" item="hero" separator="," index="index">
+            (#{hero.l_name},#{hero.l_image})
+        </foreach>
+    </insert>
+</mapper>
+
+        <!--parameterType="com.zpt.demo.model.LolHero"-->
