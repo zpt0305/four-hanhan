@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zpt.demo.mapper.ProductMapper">
+    <select id="getAll" resultType="com.zpt.demo.model.Product">
+        select * from product
+    </select>
+
+    <select id="getOne" parameterType="integer" resultType="com.zpt.demo.model.Product">
+        select * from product
+        where product_no = #{productNo}
+    </select>
+
+    <update id="updateCount" parameterType="com.zpt.demo.model.Product">
+        update product set count = count-1
+        where product_no = #{productNo}
+    </update>
+</mapper>

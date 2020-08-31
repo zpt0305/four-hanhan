@@ -1,14 +1,21 @@
 package com.zpt.demo.config;
 
+import com.zpt.demo.others.consumer.OrderListener;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -41,12 +48,14 @@ public class RabbitMQConfig {
     public static final String EXCHANGE_FANOUT = "fanout_Exchange";
     public static final String EXCHANGE_TOPIC = "topic_Exchange";
     public static final String EXCHANGE_HEADERS = "headers_Exchange";
+    public static final String EXCHANGE_TOPIC_ORDER = "topic_exchange_order";
 
 
     public static final String QUEUE_A = "QUEUE_A";
     public static final String QUEUE_B = "QUEUE_B";
     public static final String QUEUE_C = "QUEUE_C";
     public static final String QUEUE_D = "QUEUE_D";
+    public static final String QUEUE_ORDER = "QUEUE_ORDER";
 
     public static final String ROUTINGKEY_A = "spring-boot-routingKey_A";
     public static final String ROUTINGKEY_B = "spring-boot-routingKey_B";
@@ -166,4 +175,90 @@ public class RabbitMQConfig {
         header.put("bindType", "whereAny");
         return BindingBuilder.bind(queueB()).to(headersExchange()).whereAny(header).match();
     }
+
+    /**
+     *
+     * 以下是模拟商城秒杀，利用rabbitMQ削峰配置
+     *
+     */
+
+    /*@Autowired
+    private CachingConnectionFactory connectionFactory;
+
+    @Autowired
+    private SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer;*/
+
+    @Autowired
+    private OrderListener orderListener;
+
+
+    /**
+     * 单一消费者
+     * @return
+     *//*
+    @Bean(name = "singleListenerContainer")
+    public SimpleRabbitListenerContainerFactory listenerContainer(){
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        factory.setConcurrentConsumers(1);
+        factory.setMaxConcurrentConsumers(1);
+        factory.setPrefetchCount(1);
+        factory.setTxSize(1);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        return factory;
+    }
+
+    *//**
+     * 多个消费者
+     * @return
+     *//*
+    @Bean(name = "multiListenerContainer")
+    public SimpleRabbitListenerContainerFactory multiListenerContainer(){
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factoryConfigurer.configure(factory,connectionFactory);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        factory.setAcknowledgeMode(AcknowledgeMode.NONE);
+        factory.setConcurrentConsumers(10);
+        factory.setMaxConcurrentConsumers(10);
+        factory.setPrefetchCount(5);
+        return factory;
+    }*/
+
+
+    @Bean("orderQueue")
+    public Queue orderQueue(){
+        return new Queue(QUEUE_ORDER,true);
+    }
+
+    @Bean
+    public TopicExchange orderExchange(){
+        return new TopicExchange(EXCHANGE_TOPIC_ORDER,true,false);
+    }
+
+    @Bean
+    public Binding orderBinding(){
+        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(ROUTINGKEY_A);
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer listenerContainerOrder(@Qualifier("orderQueue") Queue orderQueue){
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory());
+        //container.setMessageConverter(new Jackson2JsonMessageConverter());
+
+        //并发配置
+        container.setConcurrentConsumers(10);
+        container.setMaxConcurrentConsumers(10);
+        container.setPrefetchCount(5);
+
+        //消息确认机制
+        //Auto - 自动、Manual - 手动、None - 无需确认
+        container.setQueues(orderQueue);
+        container.setMessageListener(orderListener);
+        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+
+        return container;
+    }
+
 }

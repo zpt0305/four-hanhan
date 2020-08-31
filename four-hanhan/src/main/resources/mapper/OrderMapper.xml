@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zpt.demo.mapper.OrderMapper">
+    <select id="getAll" resultType="com.zpt.demo.model.ProductOrder">
+        select * from product_order
+    </select>
+
+    <insert id="insert" parameterType="com.zpt.demo.model.ProductOrder">
+        insert into product_order(order_no,order_time,product_no,consumer_phone,count,amount,pay_status)
+         values (#{orderNo},#{orderTime},#{productNo},#{consumerPhone},#{count},#{amount},#{payStatus})
+    </insert>
+</mapper>
