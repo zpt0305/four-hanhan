@@ -16,6 +16,11 @@ public class RabbitMQMsgReceiver1 {
     @RabbitListener(queues = RabbitMQConfig.QUEUE_A)
     @RabbitHandler
     public void process(String content){
+        /*try{
+            Thread.sleep(2000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
         logger.info("接收处理队列A当中的消息： " + content);
     }
 

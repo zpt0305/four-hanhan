@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class RabbitMQMsgProducer implements RabbitTemplate.ConfirmCallback {
+public class RabbitMQMsgProducer implements RabbitTemplate.ReturnCallback {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,13 +25,14 @@ public class RabbitMQMsgProducer implements RabbitTemplate.ConfirmCallback {
     @Autowired
     public RabbitMQMsgProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        rabbitTemplate.setConfirmCallback(this); //rabbitTemplate如果为单例的话，那回调就是最后设置的内容
+        //rabbitTemplate.setConfirmCallback(this); //rabbitTemplate如果为单例的话，那回调就是最后设置的内容
+        rabbitTemplate.setReturnCallback(this::returnedMessage);
     }
 
     /**
      * 回调
      */
-    @Override
+    //@Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         logger.info("回调id:" + correlationData);
         if (ack) {
@@ -39,6 +40,16 @@ public class RabbitMQMsgProducer implements RabbitTemplate.ConfirmCallback {
         } else {
             logger.info("消息消费失败:" + cause);
         }
+    }
+
+    @Override
+    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+        System.out.println("消息主体 message : "+message);
+        System.out.println("消息主体 message : "+replyCode);
+        System.out.println("描述："+replyText);
+        System.out.println("消息使用的交换器 exchange : "+exchange);
+        System.out.println("消息使用的路由键 routing : "+routingKey);
+
     }
 
     public void simpleMsgSend(String content) {
@@ -49,7 +60,7 @@ public class RabbitMQMsgProducer implements RabbitTemplate.ConfirmCallback {
     public void directExchangeMsgSend(String content) {
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
         //指定消费队列A
-        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_A,RabbitMQConfig.ROUTINGKEY_A,content,correlationId);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_A,RabbitMQConfig.ROUTINGKEY_C,content,correlationId);
     }
 
     public void fanoutExchangeMsgSend(String content) {

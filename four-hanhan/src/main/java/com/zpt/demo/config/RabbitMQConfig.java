@@ -59,8 +59,9 @@ public class RabbitMQConfig {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host,port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
-        connectionFactory.setVirtualHost("testhost");
-        connectionFactory.setPublisherConfirms(true);
+        //connectionFactory.setVirtualHost("zpt");
+        //connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherReturns(true);
         return connectionFactory;
     }
 

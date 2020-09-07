@@ -19,7 +19,9 @@ public class RabbitMQMsgController {
 
     @RequestMapping("/directExchangeMsgSend")
     public void directExchangeMsgSend(){
-        msgProducer.directExchangeMsgSend("你好 直连式交换机！");
+        for (int i = 0; i < 5; i++) {
+            msgProducer.directExchangeMsgSend("你好 直连式交换机！");
+        }
     }
 
     @RequestMapping("/fanoutExchangeMsgSend")

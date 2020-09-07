@@ -5,7 +5,7 @@
         insert into user values (#{u_id},#{u_name},#{u_password})
     </insert>
 
-    <select id="selectAll" resultType="com.zpt.demo.model.User">
+    <select id="selectAll" resultType="com.zpt.demo.model.RedisUser">
         SELECT * from user
     </select>
 </mapper>

@@ -1,3 +1,4 @@
+/*
 package com.zpt.demo.controller;
 
 import sun.misc.BASE64Decoder;
@@ -68,11 +69,13 @@ public class Test {
         }
         System.out.println(sum);
 
-        /*long sum1 = 0;
+        */
+/*long sum1 = 0;
         for (Integer integer : list) {
             sum1 += integer;
         }
-        System.out.println(sum1);*/
+        System.out.println(sum1);*//*
+
     }
 
     public static PrivateKey getPrivateKey(String key) throws Exception {
@@ -154,3 +157,4 @@ class MyCallable implements Callable {
         return sum;
     }
 }
+*/

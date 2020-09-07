@@ -1,11 +1,8 @@
 package com.zpt.demo.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.zpt.demo.model.RedisUser;
-import com.zpt.demo.model.User;
 
 import com.zpt.demo.service.RedisUserService;
-import com.zpt.demo.service.UserRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -13,18 +10,49 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/redis")
-public class UserRedisController {
+public class RedisController {
 
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Autowired
     private RedisUserService redisUserService;
+
+    @RequestMapping("testKeys")
+    public void testHash(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("age",24);
+        map.put("high",170 + "cm");
+        map.put("weight",65 + "kg");
+        map.put("like","computerGames");
+        map.put("lover","zcl");
+        redisTemplate.opsForHash().put("zpt","name","zpt");
+        redisTemplate.opsForHash().putAll("zpt",map);
+
+        System.out.println(redisTemplate.opsForHash().hasKey("zpt", "name"));
+        System.out.println(redisTemplate.opsForHash().size("zpt"));
+        System.out.println(redisTemplate.opsForHash().keys("zpt"));
+        //redisTemplate.opsForHash().increment("zpt","age",1L);
+        //redisTemplate.opsForHash().increment("zpt","age",1.5d);
+        System.out.println(redisTemplate.opsForHash().keys("zpt"));
+        System.out.println(redisTemplate.opsForHash().values("zpt"));
+        System.out.println(redisTemplate.opsForHash().putIfAbsent("zpt", "name", "zpt"));
+        System.out.println(redisTemplate.opsForHash().lengthOfValue("zpt", "name"));
+        System.out.println(redisTemplate.opsForHash().getOperations().boundHashOps("name"));
+//        redisTemplate.opsForHash().multiGet("zpt",new llection<HK>);*/
+
+        System.out.println(redisTemplate.opsForHash().get("zpt", "name"));
+        System.out.println(redisTemplate.opsForHash().entries("zpt").toString());
+    }
+
+
 
     @RequestMapping("/get")
     public void get(){
